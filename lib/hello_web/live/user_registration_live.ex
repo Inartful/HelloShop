@@ -31,8 +31,15 @@ defmodule HelloWeb.UserRegistrationLive do
           Oops, something went wrong! Please check the errors below.
         </.error>
 
+        <.input field={@form[:nickname]} type="text" label="Nickname" required />
         <.input field={@form[:email]} type="email" label="Email" required />
         <.input field={@form[:password]} type="password" label="Password" required />
+        <.input
+          field={@form[:password_confirmation]}
+          type="password"
+          label="Confirm Password"
+          required
+        />
 
         <:actions>
           <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>

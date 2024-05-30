@@ -3,8 +3,10 @@ defmodule Hello.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
+    field :nickname, :string
     field :email, :string
     field :password, :string, virtual: true, redact: true
+    field :password_confirmation, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     field :user_uuid, Ecto.UUID
@@ -37,9 +39,18 @@ defmodule Hello.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :password_confirmation, :nickname])
     |> validate_email(opts)
+    |> validate_confirmation_of(opts)
+    |> validate_nickname(opts)
     |> validate_password(opts)
+  end
+
+  defp validate_nickname(changeset, opts) do
+    changeset
+    |> validate_required([:nickname])
+    |> validate_length(:nickname, max: 160)
+    |> maybe_validate_unique_nickname(opts)
   end
 
   defp validate_email(changeset, opts) do
@@ -59,6 +70,21 @@ defmodule Hello.Accounts.User do
     # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
     # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
     |> maybe_hash_password(opts)
+  end
+
+  def validate_confirmation_of(changeset, _opts) do
+    field_value = get_field(changeset, :password_confirmation)
+    confirmation_value = get_field(changeset, :password)
+    IO.inspect(field_value, label: "Field value")
+    IO.inspect(confirmation_value, label: "Confirmation value")
+
+    case {field_value, confirmation_value} do
+      {field_val, confirm_val} when field_val == confirm_val ->
+        changeset
+
+      _ ->
+        add_error(changeset, :password_confirmation, "does not match the confirmation")
+    end
   end
 
   defp maybe_hash_password(changeset, opts) do
@@ -83,6 +109,16 @@ defmodule Hello.Accounts.User do
       changeset
       |> unsafe_validate_unique(:email, Hello.Repo)
       |> unique_constraint(:email)
+    else
+      changeset
+    end
+  end
+
+  defp maybe_validate_unique_nickname(changeset, opts) do
+    if Keyword.get(opts, :validate_nickname, true) do
+      changeset
+      |> unsafe_validate_unique(:nickname, Hello.Repo)
+      |> unique_constraint(:nickname)
     else
       changeset
     end
