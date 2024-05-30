@@ -11,27 +11,12 @@ defmodule HelloWeb.Router do
     plug :put_root_layout, html: {HelloWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    # plug :fetch_current_user
-    # plug :fetch_current_cart
   end
 
   pipeline :au_req do
     plug :fetch_current_user
     plug :require_authenticated_user
-    plug :fetch_current_cart
   end
-
-  # defp fetch_current_user(conn, _) do
-  #   if user_uuid = get_session(conn, :current_uuid) do
-  #     assign(conn, :current_uuid, user_uuid)
-  #   else
-  #     new_uuid = Ecto.UUID.generate()
-
-  #     conn
-  #     |> assign(:current_uuid, new_uuid)
-  #     |> put_session(:current_uuid, new_uuid)
-  #   end
-  # end
 
   alias Hello.ShoppingCart
 
@@ -49,7 +34,7 @@ defmodule HelloWeb.Router do
   end
 
   scope "/", HelloWeb do
-    pipe_through [:browser, :au_req]
+    pipe_through [:browser, :au_req, :fetch_current_cart]
 
     get "/", PageController, :home
     resources "/products", ProductController
@@ -101,7 +86,7 @@ defmodule HelloWeb.Router do
   end
 
   scope "/", HelloWeb do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through [:browser, :au_req]
 
     live_session :require_authenticated_user,
       on_mount: [{HelloWeb.UserAuth, :ensure_authenticated}] do

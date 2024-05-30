@@ -29,7 +29,9 @@ config :hello, HelloWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :hello, Hello.Mailer, adapter: Swoosh.Adapters.Local
+config :hello, Hello.Mailer,
+  adapter: Swoosh.Adapters.Sendgrid,
+  api_key: System.get_env("SENDGRID_KEY")
 
 # Configure esbuild (the version is required)
 config :esbuild,
