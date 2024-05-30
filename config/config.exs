@@ -11,6 +11,13 @@ config :hello,
   ecto_repos: [Hello.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :hello, Hello.Repo,
+  username: "postgres",
+  password: "1531",
+  hostname: "localhost",
+  database: "hello_test#{System.get_env("MIX_TEST_PARTITION")}",
+  pool_size: System.schedulers_online() * 2
+
 # Configures the endpoint
 config :hello, HelloWeb.Endpoint,
   url: [host: "localhost"],

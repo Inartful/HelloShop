@@ -18,7 +18,7 @@ defmodule HelloWeb.OrderController do
   end
 
   def show(conn, %{"id" => id}) do
-    order = Orders.get_order!(conn.assigns.current_uuid, id)
+    order = Orders.get_order!(conn.assigns.current_user.user_uuid, id)
     render(conn, :show, order: order)
   end
 end

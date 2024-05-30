@@ -49,7 +49,11 @@ defmodule Hello.Accounts.User do
   defp validate_nickname(changeset, opts) do
     changeset
     |> validate_required([:nickname])
-    |> validate_length(:nickname, max: 160)
+    |> validate_length(:nickname, max: 20)
+    |> validate_format(:nickname, ~r/\A\S+\z/, message: "cannot contain spaces")
+    |> validate_format(:nickname, ~r/\A[a-zA-Z0-9]+\z/,
+      message: "can only contain Latin letters or numbers"
+    )
     |> maybe_validate_unique_nickname(opts)
   end
 
@@ -190,6 +194,21 @@ defmodule Hello.Accounts.User do
       changeset
     else
       add_error(changeset, :current_password, "is not valid")
+    end
+  end
+
+  @doc """
+  A user changeset for changing the nickname.
+
+  It requires the nickname to change otherwise an error is added.
+  """
+  def nickname_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:nickname])
+    |> validate_nickname(opts)
+    |> case do
+      %{changes: %{nickname: _}} = changeset -> changeset
+      %{} = changeset -> add_error(changeset, :nickname, "did not change")
     end
   end
 end

@@ -7,10 +7,32 @@ defmodule HelloWeb.UserSettingsLive do
     ~H"""
     <.header class="text-center">
       Account Settings
-      <:subtitle>Manage your account email address and password settings</:subtitle>
+      <:subtitle>Manage your account nickname, email address and password settings</:subtitle>
     </.header>
 
     <div class="space-y-12 divide-y">
+      <div>
+        <.simple_form
+          for={@nickname_form}
+          id="nickname_form"
+          phx-submit="update_nickname"
+          phx-change="validate_nickname"
+        >
+          <.input field={@nickname_form[:nickname]} type="text" label="Nickname" required />
+          <.input
+            field={@nickname_form[:current_password]}
+            name="current_password"
+            id="current_password_for_nickname"
+            type="password"
+            label="Current password"
+            value={@nickname_form_current_password}
+            required
+          />
+          <:actions>
+            <.button phx-disable-with="Changing...">Change Nickname</.button>
+          </:actions>
+        </.simple_form>
+      </div>
       <div>
         <.simple_form
           for={@email_form}
@@ -70,6 +92,8 @@ defmodule HelloWeb.UserSettingsLive do
         </.simple_form>
       </div>
     </div>
+
+    <.back navigate={~p"/products"}>Back to products</.back>
     """
   end
 
@@ -90,14 +114,18 @@ defmodule HelloWeb.UserSettingsLive do
     user = socket.assigns.current_user
     email_changeset = Accounts.change_user_email(user)
     password_changeset = Accounts.change_user_password(user)
+    username_changeset = Accounts.change_user_nickname(user)
 
     socket =
       socket
       |> assign(:current_password, nil)
       |> assign(:email_form_current_password, nil)
+      |> assign(:nickname_form_current_password, nil)
       |> assign(:current_email, user.email)
+      |> assign(:current_nickname, user.nickname)
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
+      |> assign(:nickname_form, to_form(username_changeset))
       |> assign(:trigger_submit, false)
 
     {:ok, socket}
@@ -162,6 +190,41 @@ defmodule HelloWeb.UserSettingsLive do
 
       {:error, changeset} ->
         {:noreply, assign(socket, password_form: to_form(changeset))}
+    end
+  end
+
+  def handle_event("validate_nickname", params, socket) do
+    %{"current_password" => password, "user" => user_params} = params
+
+    nickname_form =
+      socket.assigns.current_user
+      |> Accounts.change_user_nickname(user_params)
+      |> Map.put(:action, :validate)
+      |> to_form()
+
+    {:noreply,
+     assign(socket, nickname_form: nickname_form, nickname_form_current_password: password)}
+  end
+
+  def handle_event("update_nickname", params, socket) do
+    %{"current_password" => password, "user" => user_params} = params
+    user = socket.assigns.current_user
+
+    case Accounts.apply_user_nickname(user, password, user_params) do
+      {:ok, _} ->
+        info = "Your nickname has been updated successfully."
+
+        {:noreply,
+         socket |> put_flash(:info, info) |> assign(nickname_form_current_password: nil)}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, :nickname_form, to_form(Map.put(changeset, :action, :insert)))}
+
+        #   info = "A link to confirm your email change has been sent to the new address."
+        #   {:noreply, socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
+
+        # {:error, changeset} ->
+        #   {:noreply, assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}
     end
   end
 end

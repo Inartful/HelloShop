@@ -127,7 +127,7 @@ defmodule Hello.Accounts do
     user
     |> User.email_changeset(attrs)
     |> User.validate_current_password(password)
-    |> Ecto.Changeset.apply_action(:update)
+    |> apply_changes(user)
   end
 
   @doc """
@@ -174,6 +174,43 @@ defmodule Hello.Accounts do
 
     Repo.insert!(user_token)
     UserNotifier.deliver_update_email_instructions(user, update_email_url_fun.(encoded_token))
+  end
+
+  def change_user_nickname(user, attrs \\ %{}) do
+    User.nickname_changeset(user, attrs)
+  end
+
+  @doc """
+  Emulates that the email will change without actually changing
+  it in the database.
+
+  ## Examples
+
+      iex> apply_user_email(user, "valid password", %{email: ...})
+      {:ok, %User{}}
+
+      iex> apply_user_email(user, "invalid password", %{email: ...})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def apply_user_nickname(user, password, attrs) do
+    user
+    |> User.nickname_changeset(attrs)
+    |> User.validate_current_password(password)
+    |> apply_changes(user)
+  end
+
+  defp apply_changes(changeset, user) do
+    case changeset.valid? do
+      true ->
+        case Repo.update(changeset, where: user.id) do
+          {:ok, updated_user} -> {:ok, updated_user}
+          {:error, changeset} -> {:error, changeset}
+        end
+
+      false ->
+        {:error, changeset}
+    end
   end
 
   @doc """
