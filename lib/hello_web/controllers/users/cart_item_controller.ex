@@ -8,12 +8,12 @@ defmodule HelloWeb.CartItemController do
       {:ok, _item} ->
         conn
         |> put_flash(:info, "Item added to your cart")
-        |> redirect(to: ~p"/cart")
+        |> redirect(to: ~p"/products/#{product_id}")
 
       {:error, _changeset} ->
         conn
         |> put_flash(:error, "There was an error adding the item to your cart")
-        |> redirect(to: ~p"/cart")
+        |> redirect(to: ~p"/products/#{product_id}")
     end
   end
 

@@ -2,11 +2,8 @@
   Product <%= @product.id %>
     <:subtitle>This is a product record from your database.</:subtitle>
     <:actions>
-      <.link href={~p"/products/#{@product}/edit"}>
+      <.link href={~p"/admin/products/#{@product}/edit"}>
         <.button>Edit product</.button>
-      </.link>
-      <.link href={~p"/cart_items?product_id=#{@product.id}"} method="post">
-        <.button>Add to cart</.button>
       </.link>
     </:actions>
 </.header>
@@ -32,4 +29,4 @@
   </:item>
 </.list>
 
-<.back navigate={~p"/products"}>Back to products</.back>
+<.back navigate={~p"/admin/products"}>Back to products</.back>

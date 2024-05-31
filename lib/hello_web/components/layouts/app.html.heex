@@ -1,31 +1,65 @@
-<!-- <header class="px-4 sm:px-6 lg:px-8">
-  <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
-    <div class="flex items-center gap-4">
-      <a href="/">
-        <img src={~p"/images/logo.svg"} width="36" />
-      </a>
-      <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
-        v<%= Application.spec(:phoenix, :vsn) %>
-      </p>
+<%= if @current_user do %>
+  <header class="px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
+      <div class="flex items-center gap-4">
+        <a href="/">
+          <img src={~p"/images/logo.svg"} width="36" />
+        </a>
+        <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
+          v<%= Application.spec(:phoenix, :vsn) %>
+        </p>
+      </div>
+      <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
+        <div>
+          @<%= @current_user.nickname %>
+        </div>
+        <a href={~p"/users/settings"} class="hover:text-zinc-700">
+          Settings
+        </a>
+        <form action={~p"/users/log_out"} method="post" onsubmit="event.preventDefault(); logout()">
+          <button type="submit" class="hover:text-zinc-700">Log out</button>
+        </form>
+        <a href={~p"/cart"} class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80">
+          To Cart <span aria-hidden="true">&rarr;</span>
+        </a>
+        <a href={~p"/orders"} class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80">
+          To Orders <span aria-hidden="true">&rarr;</span>
+        </a>
+        <%= if @current_user.is_admin do %>
+          <a href={~p"/products"} class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80">
+            To User's main page <span aria-hidden="true">&rarr;</span>
+          </a>
+          <a href={~p"/admin/products"} class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80">
+            To Admin's main page <span aria-hidden="true">&rarr;</span>
+          </a>
+          <% end %>
+      </div>
     </div>
-    <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
-      <a href="https://twitter.com/elixirphoenix" class="hover:text-zinc-700">
-        @elixirphoenix
-      </a>
-      <a href="https://github.com/phoenixframework/phoenix" class="hover:text-zinc-700">
-        GitHub
-      </a>
-      <a href="https://hexdocs.pm/phoenix/overview.html" class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80">
-        Get Started <span aria-hidden="true">&rarr;</span>
-      </a>
-    </div>
-  </div>
   </header>
-  -->
+  <% end %>
 
-<main class="px-4 py-20 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl">
-    <.flash_group flash={@flash} />
-    <%= @inner_content %>
-  </div>
-</main>
+    <main class="px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-2xl">
+        <.flash_group flash={@flash} />
+        <%= @inner_content %>
+      </div>
+    </main>
+
+    <script>
+      function logout() {
+        var form = document.querySelector('form[action="/users/log_out"]');
+        var methodInput = document.createElement('input');
+        methodInput.setAttribute('type', 'hidden');
+        methodInput.setAttribute('name', '_method');
+        methodInput.setAttribute('value', 'delete');
+        form.appendChild(methodInput);
+
+        var csrfInput = document.createElement('input');
+        csrfInput.setAttribute('type', 'hidden');
+        csrfInput.setAttribute('name', '_csrf_token');
+        csrfInput.setAttribute('value', '<%= Plug.CSRFProtection.get_csrf_token() %>');
+        form.appendChild(csrfInput);
+
+        form.submit();
+      }
+    </script>

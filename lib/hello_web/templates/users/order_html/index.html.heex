@@ -1,0 +1,33 @@
+<.header>
+  Listing Orders
+  <!--<:actions>
+      <.link href={~p"/products/new"}>
+        <.button>New Product</.button>
+      </.link>
+    </:actions>-->
+</.header>
+
+<.table id="orders" rows={@orders} row_click={&JS.navigate(~p"/orders/#{&1}")}>
+  <:col :let={order} label="Title">
+    <%= order.id %>
+  </:col>
+  <:col :let={order} label="Description">
+    <%= order.total_price %>
+  </:col>
+  <:col :let={order} label="Status">
+    <%= if order.status, do: order.status.name, else: "None" %>
+  </:col>
+  <:action :let={order}>
+    <div class="sr-only">
+      <.link navigate={~p"/orders/#{order}"}>Show</.link>
+    </div>
+    <!--<.link navigate={~p"/products/#{product}/edit"}>Edit</.link>-->
+  </:action>
+  <!--<:action :let={product}>
+      <.link href={~p"/products/#{product}"} method="delete" data-confirm="Are you sure?">
+        Delete
+      </.link>
+    </:action>-->
+</.table>
+
+<.back navigate={~p"/products"}>Back to products</.back>

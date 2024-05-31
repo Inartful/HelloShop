@@ -1,5 +1,4 @@
 defmodule HelloWeb.Router do
-  alias Hello.ShoppingCart
   use HelloWeb, :router
 
   import HelloWeb.UserAuth
@@ -18,17 +17,6 @@ defmodule HelloWeb.Router do
     plug :require_authenticated_user
   end
 
-  alias Hello.ShoppingCart
-
-  defp fetch_current_cart(conn, _opts) do
-    if cart = ShoppingCart.get_cart_by_user_uuid(conn.assigns.current_user.user_uuid) do
-      assign(conn, :cart, cart)
-    else
-      {:ok, new_cart} = ShoppingCart.create_cart(conn.assigns.current_user.user_uuid)
-      assign(conn, :cart, new_cart)
-    end
-  end
-
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -37,14 +25,21 @@ defmodule HelloWeb.Router do
     pipe_through [:browser, :au_req, :fetch_current_cart]
 
     get "/", PageController, :home
-    resources "/products", ProductController
+    resources "/products", ProductController, only: [:index, :show]
 
     resources "/cart_items", CartItemController, only: [:create, :delete]
 
     get "/cart", CartController, :show
     put "/cart", CartController, :update
 
-    resources "/orders", OrderController, only: [:create, :show]
+    resources "/orders", OrderController, only: [:create, :show, :index]
+  end
+
+  scope "/admin", HelloWeb do
+    pipe_through [:browser, :au_req, :require_admin, :fetch_current_cart]
+
+    get "/", AdminPageController, :home
+    resources "/products", AdminProductController
   end
 
   # Other scopes may use custom stacks.

@@ -6,5 +6,5 @@ defmodule HelloWeb.PageHTML do
   """
   use HelloWeb, :html
 
-  embed_templates "page_html/*"
+  embed_templates "../../templates/users/page_html/*"
 end

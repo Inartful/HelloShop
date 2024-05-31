@@ -3,7 +3,7 @@ defmodule HelloWeb.CartHTML do
 
   alias Hello.ShoppingCart
 
-  embed_templates "cart_html/*"
+  embed_templates "../../templates/users/cart_html/*"
 
   def currency_to_str(%Decimal{} = val), do: "$#{Decimal.round(val, 2)}"
 end

@@ -10,6 +10,7 @@ defmodule Hello.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     field :user_uuid, Ecto.UUID
+    field :is_admin, :boolean
 
     timestamps(type: :utc_datetime)
   end

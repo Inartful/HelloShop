@@ -10,6 +10,12 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-for title <- ["Home Improvement", "Power Tools", "Gardening", "Books", "Education"] do
-  {:ok, _} = Hello.Catalog.create_category(%{title: title})
+# for title <- ["Home Improvement", "Power Tools", "Gardening", "Books", "Education"] do
+#   {:ok, _} = Hello.Catalog.create_category(%{title: title})
+# end
+
+statuses = ["Pending", "Processing", "Completed", "Cancelled"]
+
+for status <- statuses do
+  {:ok, _} = Hello.Orders.create_status(%{name: status})
 end

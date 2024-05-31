@@ -7,6 +7,7 @@ defmodule Hello.Orders do
   alias Hello.Repo
 
   alias Hello.Orders.Order
+  alias Hello.Orders.Status
 
   @doc """
   Returns the list of orders.
@@ -17,8 +18,12 @@ defmodule Hello.Orders do
       [%Order{}, ...]
 
   """
-  def list_orders do
-    Repo.all(Order)
+  def list_orders(user_uuid) do
+    Repo.all(
+      from o in Order,
+        where: o.user_uuid == ^user_uuid,
+        preload: :status
+    )
   end
 
   @doc """
@@ -215,7 +220,8 @@ defmodule Hello.Orders do
       Ecto.Changeset.change(%Order{},
         user_uuid: cart.user_uuid,
         total_price: ShoppingCart.total_cart_price(cart),
-        line_items: line_items
+        line_items: line_items,
+        status_id: 1
       )
 
     Ecto.Multi.new()
@@ -228,5 +234,11 @@ defmodule Hello.Orders do
       {:ok, %{order: order}} -> {:ok, order}
       {:error, name, value, _changes_so_far} -> {:error, {name, value}}
     end
+  end
+
+  def create_status(attrs \\ %{}) do
+    %Status{}
+    |> Status.changeset(attrs)
+    |> Repo.insert()
   end
 end

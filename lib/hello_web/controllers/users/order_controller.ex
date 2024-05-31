@@ -21,4 +21,9 @@ defmodule HelloWeb.OrderController do
     order = Orders.get_order!(conn.assigns.current_user.user_uuid, id)
     render(conn, :show, order: order)
   end
+
+  def index(conn, _) do
+    orders = Orders.list_orders(conn.assigns.current_user.user_uuid)
+    render(conn, :index, orders: orders)
+  end
 end

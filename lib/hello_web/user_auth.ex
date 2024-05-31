@@ -5,6 +5,7 @@ defmodule HelloWeb.UserAuth do
   import Phoenix.Controller
 
   alias Hello.Accounts
+  alias Hello.ShoppingCart
 
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change
@@ -226,4 +227,30 @@ defmodule HelloWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   defp signed_in_path(_conn), do: ~p"/"
+
+  @doc """
+  Fetches the current shopping cart for the authenticated user.
+
+  This function is used to retrieve the existing shopping cart for the user identified by their UUID.
+  If no cart is found, a new one is created and assigned to the connection.
+  """
+  def fetch_current_cart(conn, _opts) do
+    if cart = ShoppingCart.get_cart_by_user_uuid(conn.assigns.current_user.user_uuid) do
+      assign(conn, :cart, cart)
+    else
+      {:ok, new_cart} = ShoppingCart.create_cart(conn.assigns.current_user.user_uuid)
+      assign(conn, :cart, new_cart)
+    end
+  end
+
+  def require_admin(conn, _opts) do
+    if(conn.assigns.current_user.is_admin) do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must be an admin to access this page.")
+      |> redirect(to: ~p"/")
+      |> halt()
+    end
+  end
 end
