@@ -8,6 +8,18 @@ defmodule Hello.Catalog do
 
   alias Hello.Catalog.{Product, Category}
 
+  alias Hello.Catalog.Smartphones.{
+    Smartphone
+    # Processor,
+    # GPU,
+    # Screen,
+    # MainCamera,
+    # FrontCamera,
+    # OperationSystem,
+    # Dimensions,
+    # Spec
+  }
+
   @doc """
   Returns the list of products.
 
@@ -219,4 +231,55 @@ defmodule Hello.Catalog do
   def change_category(%Category{} = category, attrs \\ %{}) do
     Category.changeset(category, attrs)
   end
+
+  #################################
+  #################################
+  #################################
+  #################################
+
+  # def create_smartphone(attrs \\ %{}) do
+  #   %Smartphone{}
+  #   |> Smartphone.changeset(attrs)
+  #   |> Repo.insert()
+  # end
+
+  def get_smartphone_by(attr) do
+    Repo.get_by(Smartphone, attr)
+    |> preload()
+  end
+
+  def get_smartphone(id) do
+    Repo.get(Smartphone, id)
+    |> preload()
+  end
+
+  def delete_smartphone(%Smartphone{} = smartphone) do
+    Repo.delete(smartphone)
+  end
+
+  def list_smartphones do
+    Repo.all(Smartphone)
+    |> preload()
+  end
+
+  defp preload(smartphone) do
+    smartphone
+    |> Repo.preload(
+      spec: [
+        :processor,
+        :gpu,
+        :screen,
+        :main_camera,
+        :front_camera,
+        :operation_system,
+        :dimensions
+      ]
+    )
+  end
 end
+
+# smartphone =
+#   Repo.get(Smartphone, 1)
+#   |> Repo.preload(
+#     spec: [:processor, :gpu, :screen, :main_camera, :front_camera, :operation_system, :dimensions]
+#   )

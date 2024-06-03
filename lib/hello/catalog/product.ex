@@ -15,7 +15,7 @@ defmodule Hello.Catalog.Product do
   end
 
   @doc false
-  def changeset(product, attrs) do
+  def changeset(product, attrs \\ %{}) do
     product
     |> cast(attrs, [:title, :description, :price, :views])
     |> validate_required([:title, :description, :price, :views])
