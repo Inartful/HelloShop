@@ -24,6 +24,8 @@ defmodule Hello.Repo.Migrations.CreateSmartphonesTable do
       timestamps()
     end
 
+    create unique_index(:gpu, [:name])
+
     create table(:main_cameras) do
       add :resolution, :string
       add :features, :string
@@ -40,6 +42,8 @@ defmodule Hello.Repo.Migrations.CreateSmartphonesTable do
       timestamps()
     end
 
+    create unique_index(:processors, [:name])
+
     create table(:screens) do
       add :size, :string
       add :resolution, :string
@@ -55,6 +59,8 @@ defmodule Hello.Repo.Migrations.CreateSmartphonesTable do
 
       timestamps()
     end
+
+    create unique_index(:operation_systems, [:name])
 
     create table(:specs) do
       add :weight, :float

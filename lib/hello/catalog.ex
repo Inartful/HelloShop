@@ -271,7 +271,9 @@ defmodule Hello.Catalog do
         :front_camera,
         :operation_system,
         :dimensions
-      ]
+      ],
+      colors: [],
+      materials: []
     )
   end
 end
