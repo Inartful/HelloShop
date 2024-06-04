@@ -1,65 +1,48 @@
-<%= if @current_user do %>
-  <header class="px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
-      <div class="flex items-center gap-4">
-        <a href="/">
-          <img src={~p"/images/logo.svg"} width="36" />
-        </a>
-        <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
-          v<%= Application.spec(:phoenix, :vsn) %>
-        </p>
-      </div>
-      <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
-        <div>
-          @<%= @current_user.nickname %>
-        </div>
-        <a href={~p"/users/settings"} class="hover:text-zinc-700">
-          Settings
-        </a>
-        <form action={~p"/users/log_out"} method="post" onsubmit="event.preventDefault(); logout()">
-          <button type="submit" class="hover:text-zinc-700">Log out</button>
-        </form>
-        <a href={~p"/cart"} class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80">
-          To Cart <span aria-hidden="true">&rarr;</span>
-        </a>
-        <a href={~p"/orders"} class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80">
-          To Orders <span aria-hidden="true">&rarr;</span>
-        </a>
-        <%= if @current_user.is_admin do %>
-          <a href={~p"/products"} class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80">
-            To User's main page <span aria-hidden="true">&rarr;</span>
-          </a>
-          <a href={~p"/admin/products"} class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80">
-            To Admin's main page <span aria-hidden="true">&rarr;</span>
-          </a>
-          <% end %>
-      </div>
+<div class="main-box">
+  <div class="head">
+    <div class="logo">
+      <a href={~p"/"}><img src={~p"/images/Лого.svg"} alt="Логотип"></a>
     </div>
-  </header>
-  <% end %>
+    <div class="search-bar">
+      <input type="text" placeholder="Поиск по Категориям">
+      <a href="" class="search-button"><img src={~p"/images/header/Vectorloop.png"} alt="Поиск"></a>
+    </div>
+    <a href={~p"/users/settings"}>
+      <img src={~p"/images/header/Личный кабинет.svg"} alt="Личный кабинет">
+    </a>
+    <a href="">
+      <img src={~p"/images/header/Intersect.svg"} alt="Избранное" class="icon">
+    </a>
+    <a href={~p"/cart"}>
+      <img src={~p"/images/header/Union.svg"} alt="Корзина" class="icon">
+    </a>
+  </div>
 
-    <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl">
-        <.flash_group flash={@flash} />
-        <%= @inner_content %>
-      </div>
-    </main>
 
-    <script>
-      function logout() {
-        var form = document.querySelector('form[action="/users/log_out"]');
-        var methodInput = document.createElement('input');
-        methodInput.setAttribute('type', 'hidden');
-        methodInput.setAttribute('name', '_method');
-        methodInput.setAttribute('value', 'delete');
-        form.appendChild(methodInput);
+  <div class="main">
+    <.flash_group flash={@flash} />
+    <%= @inner_content %>
+  </div>
+</div>
 
-        var csrfInput = document.createElement('input');
-        csrfInput.setAttribute('type', 'hidden');
-        csrfInput.setAttribute('name', '_csrf_token');
-        csrfInput.setAttribute('value', '<%= Plug.CSRFProtection.get_csrf_token() %>');
-        form.appendChild(csrfInput);
-
-        form.submit();
-      }
-    </script>
+<footer class="footer">
+  <div class="column">
+    <img src={~p"/images/Логоlight.svg"} alt="Логотип">
+  </div>
+  <div class="column">
+    <h3>Компания</h3>
+    <p>Условия сервиса</p>
+  </div>
+  <div class="column">
+    <h3>Покупателям</h3>
+    <p>Избранное</p>
+    <p>Корзина</p>
+    <p>Контакты</p>
+  </div>
+  <div class="column">
+    <h3>Мы в Соцсетях</h3>
+    <p>Instagram</p>
+    <p>Telegram</p>
+    <p>Вконтакте</p>
+  </div>
+</footer>
