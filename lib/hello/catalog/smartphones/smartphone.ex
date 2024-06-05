@@ -1,7 +1,7 @@
 defmodule Hello.Catalog.Smartphones.Smartphone do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Hello.Catalog.Smartphones.{Spec, Color, Material}
+  alias Hello.Catalog.Smartphones.{Spec, Color, Material, Photo}
 
   schema "smartphones" do
     field :name, :string
@@ -12,6 +12,7 @@ defmodule Hello.Catalog.Smartphones.Smartphone do
 
     many_to_many :colors, Color, join_through: "smartphone_colors", on_replace: :delete
     many_to_many :materials, Material, join_through: "smartphone_materials", on_replace: :delete
+    many_to_many :photos, Photo, join_through: "smartphone_photos", on_replace: :delete
 
     timestamps(type: :utc_datetime)
   end
