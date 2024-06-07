@@ -260,6 +260,11 @@ defmodule Hello.Catalog do
     |> preload()
   end
 
+  def list_four_smartphones do
+    list_smartphones()
+    |> Enum.take(4)
+  end
+
   defp preload(smartphone) do
     smartphone
     |> Repo.preload(
@@ -273,7 +278,8 @@ defmodule Hello.Catalog do
         :dimensions
       ],
       colors: [],
-      materials: []
+      materials: [],
+      photos: []
     )
   end
 end

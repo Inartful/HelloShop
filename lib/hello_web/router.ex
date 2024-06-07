@@ -23,9 +23,10 @@ defmodule HelloWeb.Router do
 
   scope "/", HelloWeb do
     pipe_through [:browser, :au_req, :fetch_current_cart]
+    resources "/products", ProductController, only: [:index, :show]
 
     get "/", PageController, :home
-    resources "/products", ProductController, only: [:index, :show]
+    get "/:id", PageController, :show
 
     resources "/cart_items", CartItemController, only: [:create, :delete]
 

@@ -88,5 +88,59 @@ defmodule Hello.Repo.Migrations.CreateSmartphonesTable do
 
       timestamps()
     end
+
+    create table(:colors) do
+      add :title, :string
+
+      timestamps(type: :utc_datetime)
+    end
+
+    create unique_index(:colors, [:title])
+
+    create table(:smartphone_colors, primary_key: false) do
+      add :color_id, references(:colors, on_delete: :delete_all)
+      add :smartphone_id, references(:smartphones, on_delete: :delete_all)
+    end
+
+    create index(:smartphone_colors, [:color_id])
+    create unique_index(:smartphone_colors, [:smartphone_id, :color_id])
+
+    create table(:materials) do
+      add :title, :string
+
+      timestamps(type: :utc_datetime)
+    end
+
+    create unique_index(:materials, [:title])
+
+    create table(:smartphone_materials, primary_key: false) do
+      add :material_id, references(:materials, on_delete: :delete_all)
+      add :smartphone_id, references(:smartphones, on_delete: :delete_all)
+    end
+
+    create index(:smartphone_materials, [:material_id])
+    create unique_index(:smartphone_materials, [:smartphone_id, :material_id])
+
+    create table(:photos) do
+      add :path, :string
+
+      timestamps(type: :utc_datetime)
+    end
+
+    create unique_index(:photos, [:path])
+
+    create table(:smartphone_photos, primary_key: false) do
+      add :photo_id, references(:photos, on_delete: :delete_all)
+      add :smartphone_id, references(:smartphones, on_delete: :delete_all)
+    end
+
+    create index(:smartphone_photos, [:photo_id])
+    create unique_index(:smartphone_photos, [:smartphone_id, :photo_id])
+
+    alter table(:smartphones) do
+      add :views, :integer
+      add :price, :integer
+      add :amount, :integer
+    end
   end
 end

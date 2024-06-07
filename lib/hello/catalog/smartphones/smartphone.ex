@@ -8,6 +8,8 @@ defmodule Hello.Catalog.Smartphones.Smartphone do
     field :description, :string
     field :brand, :string
     field :views, :integer
+    field :price, :integer
+    field :amount, :integer
     belongs_to :spec, Spec
 
     many_to_many :colors, Color, join_through: "smartphone_colors", on_replace: :delete
@@ -20,7 +22,7 @@ defmodule Hello.Catalog.Smartphones.Smartphone do
   @doc false
   def changeset(product, attrs \\ %{}) do
     product
-    |> cast(attrs, [:name, :description, :brand])
-    |> validate_required([:name, :description, :brand])
+    |> cast(attrs, [:name, :description, :brand, :views, :price, :amount])
+    |> validate_required([:name, :description, :brand, :views, :price, :amount])
   end
 end

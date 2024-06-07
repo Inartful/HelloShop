@@ -1,0 +1,97 @@
+<link rel="stylesheet" href={~p"/assets/show.css"}>
+
+<div class="show">
+    <div class="product">
+        <div class="title">
+            <h1>
+                <%= @phone.name %>
+            </h1>
+            <div class="info">
+                <div class="review">
+                    <img src={~p"/images/show/stars.svg"} style="padding-right: 10px;">
+                    <p style="padding-right: 30px;"> 0 отзывов</p>
+                    <a href="" class="review"><img src={~p"/images/show/share.svg"} style="padding-right: 10px;">
+                        Поделиться </a>
+                </div>
+                <p class="code">Код товара: <%= @phone.id %>
+                </p>
+            </div>
+        </div>
+        <div class="show-box">
+            <% path=@phone.photos |> List.first() |> Map.get(:path)
+                path = path <> ".png"%>
+                    <img src={~p"/images/phones/#{path}"} class="product-preview">
+                    <div class="main-specs">
+                        <h1>Основные характеристики:</h1>
+                        <div class="specs">
+                            <h6>Основная камера</h6>
+                            <p>
+                                <%= @phone.spec.main_camera.resolution %>
+                            </p>
+                        </div>
+                        <div class="specs">
+                            <h6>Фронтальная камера</h6>
+                            <p>
+                                <%= @phone.spec.front_camera.resolution %>
+                            </p>
+                        </div>
+                        <div class="specs">
+                            <h6>Объем оперативной памяти</h6>
+                            <p>
+                                <%= @phone.spec.ram %>
+                            </p>
+                        </div>
+                        <div class="specs">
+                            <h6>Объем встроенной памяти</h6>
+                            <p>
+                                <%= @phone.spec.storage %> GB
+                            </p>
+                        </div>
+                        <div class="specs">
+                            <h6>Емкость аккумулятора</h6>
+                            <p>
+                                <%= @phone.spec.battery %>мА*ч
+                            </p>
+                        </div>
+                        <div class="specs">
+                            <h6>Тип матрицы</h6>
+                            <p>
+                                <%= @phone.spec.screen.type %>
+                            </p>
+                        </div>
+                        <div class="specs">
+                            <h6>Диагональ экрана, дюймы</h6>
+                            <p>
+                                <%= @phone.spec.screen.size %>
+                            </p>
+                        </div>
+                        <div class="specs">
+                            <h6>Процессор</h6>
+                            <p>
+                                <%= @phone.spec.processor.name <> " (#{@phone.spec.processor.cores} ядер) " <>
+                                        @phone.spec.processor.clock_speed %>
+                            </p>
+                        </div>
+                        <div class="specs">
+                            <h6>Основной материал корпуса</h6>
+                            <p>
+                                <%= @phone.materials |> Enum.map(&(&1.title))
+                                    |> Enum.join(", ")%>
+                            </p>
+                        </div>
+                        <a href="">Все характеристики </a>
+
+                    </div>
+                    <div class="buy">
+                        <h1>Цена:</h1>
+                        <h1 style="margin-bottom: 30px;">
+                            <%= Hello.Helper.format_with_spaces(@phone.price) <> "₸" %>
+                        </h1>
+                        <div style="display: flex; align-items: center; justify-content: space-around;">
+                            <.link href={~p"/"} method="get" class="link">Купить</.link>
+                            <.link href={~p"/"} method="get"><img src={~p"/images/show/interest.svg"}></.link>
+                        </div>
+                    </div>
+        </div>
+    </div>
+</div>

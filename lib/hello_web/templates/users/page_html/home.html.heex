@@ -2,6 +2,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
   rel="stylesheet">
+<link rel="stylesheet" href={~p"/assets/index.css"}>
 
 <div class="index">
   <script defer src={~p"/assets/index.js"}>
@@ -21,7 +22,33 @@
     <a href=""><img src={~p"/images/index/Аксессуары.png"} alt="К аксессуарам"></a>
   </div>
   <h3>Специально для вас</h3>
-  <a href=""><img src={~p"/images/index/Рекомендации.png"} alt="Телефон 1"></a>
+  <div class="smartphones">
+    <%= for phone <- @phones do%>
+      <div class="smartphone">
+        <img src={~p"/images/phones/#{phone.path}"} alt="Телефон 1" class="smartphone-photo">
+        <div>
+          <div class="review"><img src={~p"/images/Звёзды.svg"}>
+            <p> 0 отзывов</p>
+          </div>
+          <div class="category">Смартфоны</div>
+          <div class="name">
+            <%= phone.name %>
+          </div>
+        </div>
+        <div class="bottom-section">
+          <div class="price">
+            <h1>
+              <%= phone.price %>
+            </h1>
+            <p>
+              <%= if phone.have? do "Есть в наличии" else "Нет в наличии" end %>
+            </p>
+          </div>
+          <.link href={~p"/#{phone.id}"} method="get" class="link">Купить</.link>
+        </div>
+      </div>
+      <% end %>
+  </div>
   <div class="companies">
     <div class="companies-columns">
       <a href="" class="company-box"><img src={~p"/images/index/samsung.png"} alt=""></a>
