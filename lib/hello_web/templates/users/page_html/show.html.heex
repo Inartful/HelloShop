@@ -88,7 +88,8 @@
                             <%= Hello.Helper.format_with_spaces(@phone.price) <> "₸" %>
                         </h1>
                         <div style="display: flex; align-items: center; justify-content: space-around;">
-                            <.link href={~p"/"} method="get" class="link">Купить</.link>
+                            <.link href={~p"/cart_items?phone_id=#{@phone.id}"} method="post" class="link">Купить
+                            </.link>
                             <.link href={~p"/"} method="get"><img src={~p"/images/show/interest.svg"}></.link>
                         </div>
                     </div>

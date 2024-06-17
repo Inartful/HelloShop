@@ -1,6 +1,7 @@
 defmodule HelloWeb.PageController do
   use HelloWeb, :controller
   alias Hello.Catalog
+  alias Hello.Helper
 
   def home(conn, _params) do
     phones = Catalog.list_four_smartphones()
@@ -22,7 +23,7 @@ defmodule HelloWeb.PageController do
           |> Map.put(:id, phone.id)
           |> Map.put(:path, first_photo.path <> ".png")
           |> Map.put(:name, phone.name)
-          |> Map.put(:price, Hello.Helper.format_with_spaces(phone.price) <> "₸")
+          |> Map.put(:price, Helper.format_with_spaces(phone.price) <> "₸")
           |> Map.put(:have?, have?)
 
         list ++ [map]

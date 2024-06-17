@@ -4,34 +4,43 @@ defmodule Hello.ShoppingCart do
   """
 
   import Ecto.Query, warn: false
+  require Logger
   alias Hello.Repo
 
   alias Hello.Catalog
   alias Hello.ShoppingCart.{Cart, CartItem}
 
   def get_cart_by_user_uuid(user_uuid) do
-    Repo.one(
-      from(c in Cart,
-        where: c.user_uuid == ^user_uuid,
-        left_join: i in assoc(c, :items),
-        left_join: p in assoc(i, :product),
-        order_by: [asc: i.inserted_at],
-        preload: [items: {i, product: p}]
+    cart =
+      Repo.one(
+        from(c in Cart,
+          where: c.user_uuid == ^user_uuid,
+          left_join: i in assoc(c, :items),
+          left_join: p in assoc(i, :phone),
+          order_by: [asc: i.inserted_at],
+          preload: [items: {i, phone: p}]
+        )
       )
+
+    cart
+    |> Repo.preload(
+      items: [
+        phone: [
+          spec: [
+            :processor,
+            :gpu,
+            :screen,
+            :main_camera,
+            :front_camera,
+            :operation_system,
+            :dimensions
+          ],
+          colors: [],
+          materials: [],
+          photos: []
+        ]
+      ]
     )
-  end
-
-  @doc """
-  Returns the list of carts.
-
-  ## Examples
-
-      iex> list_carts()
-      [%Cart{}, ...]
-
-  """
-  def list_carts do
-    Repo.all(Cart)
   end
 
   @doc """
@@ -74,25 +83,25 @@ defmodule Hello.ShoppingCart do
 
   defp reload_cart(%Cart{} = cart), do: get_cart_by_user_uuid(cart.user_uuid)
 
-  def add_item_to_cart(%Cart{} = cart, product_id) do
-    product = Catalog.get_product!(product_id)
+  def add_item_to_cart(%Cart{} = cart, phone_id) do
+    phone = Catalog.get_smartphone(phone_id)
 
-    %CartItem{quantity: 1, price_when_carted: product.price}
+    %CartItem{quantity: 1, price_when_carted: phone.price}
     |> CartItem.changeset(%{})
     |> Ecto.Changeset.put_assoc(:cart, cart)
-    |> Ecto.Changeset.put_assoc(:product, product)
+    |> Ecto.Changeset.put_assoc(:phone, phone)
     |> Repo.insert(
       on_conflict: [inc: [quantity: 1]],
-      conflict_target: [:cart_id, :product_id]
+      conflict_target: [:cart_id, :phone_id]
     )
   end
 
-  def remove_item_from_cart(%Cart{} = cart, product_id) do
+  def remove_item_from_cart(%Cart{} = cart, phone_id) do
     {1, _} =
       Repo.delete_all(
         from(i in CartItem,
           where: i.cart_id == ^cart.id,
-          where: i.product_id == ^product_id
+          where: i.phone_id == ^phone_id
         )
       )
 
@@ -111,7 +120,7 @@ defmodule Hello.ShoppingCart do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_cart(%Cart{} = cart, attrs) do
+  def update_cart(%Cart{} = cart, attrs \\ %{}) do
     changeset =
       cart
       |> Cart.changeset(attrs)
@@ -124,8 +133,11 @@ defmodule Hello.ShoppingCart do
     end)
     |> Repo.transaction()
     |> case do
-      {:ok, %{cart: cart}} -> {:ok, cart}
-      {:error, :cart, changeset, _changes_so_far} -> {:error, changeset}
+      {:ok, %{cart: cart}} ->
+        {:ok, cart}
+
+      {:error, :cart, changeset, _changes_so_far} ->
+        {:error, changeset}
     end
   end
 
@@ -201,8 +213,8 @@ defmodule Hello.ShoppingCart do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_cart_item(attrs \\ %{}) do
-    %CartItem{}
+  def create_cart_item(%CartItem{} = item, attrs \\ %{}) do
+    item
     |> CartItem.changeset(attrs)
     |> Repo.insert()
   end
@@ -219,7 +231,7 @@ defmodule Hello.ShoppingCart do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_cart_item(%CartItem{} = cart_item, attrs) do
+  def update_cart_item(%CartItem{} = cart_item, attrs \\ %{}) do
     cart_item
     |> CartItem.changeset(attrs)
     |> Repo.update()
@@ -255,7 +267,7 @@ defmodule Hello.ShoppingCart do
   end
 
   def total_item_price(%CartItem{} = item) do
-    Decimal.mult(item.product.price, item.quantity)
+    Decimal.mult(item.phone.price, item.quantity)
   end
 
   def total_cart_price(%Cart{} = cart) do

@@ -7,7 +7,7 @@ defmodule Hello.Orders.LineItem do
     field :quantity, :integer
 
     belongs_to :order, Hello.Orders.Order
-    belongs_to :product, Hello.Catalog.Product
+    belongs_to :phone, Hello.Catalog.Smartphones.Smartphone
 
     timestamps(type: :utc_datetime)
   end

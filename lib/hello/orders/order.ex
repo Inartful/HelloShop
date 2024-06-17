@@ -17,7 +17,7 @@ defmodule Hello.Orders.Order do
     belongs_to :status, Status, foreign_key: :status_id
 
     has_many :line_items, Hello.Orders.LineItem
-    has_many :products, through: [:line_items, :product]
+    has_many :phones, through: [:line_items, :phone]
 
     timestamps(type: :utc_datetime)
   end

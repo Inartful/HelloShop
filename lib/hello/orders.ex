@@ -43,7 +43,24 @@ defmodule Hello.Orders do
   def get_order!(user_uuid, id) do
     Order
     |> Repo.get_by!(id: id, user_uuid: user_uuid)
-    |> Repo.preload(line_items: [:product])
+    |> Repo.preload(
+      line_items: [
+        phone: [
+          spec: [
+            :processor,
+            :gpu,
+            :screen,
+            :main_camera,
+            :front_camera,
+            :operation_system,
+            :dimensions
+          ],
+          colors: [],
+          materials: [],
+          photos: []
+        ]
+      ]
+    )
   end
 
   @doc """
@@ -213,7 +230,7 @@ defmodule Hello.Orders do
   def complete_order(%ShoppingCart.Cart{} = cart) do
     line_items =
       Enum.map(cart.items, fn item ->
-        %{product_id: item.product_id, price: item.product.price, quantity: item.quantity}
+        %{phone_id: item.phone_id, price: item.phone.price, quantity: item.quantity}
       end)
 
     order =

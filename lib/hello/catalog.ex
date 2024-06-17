@@ -243,12 +243,12 @@ defmodule Hello.Catalog do
 
   def get_smartphone_by(attr) do
     Repo.get_by(Smartphone, attr)
-    |> preload()
+    |> preload_smartphone()
   end
 
   def get_smartphone(id) do
     Repo.get(Smartphone, id)
-    |> preload()
+    |> preload_smartphone()
   end
 
   def delete_smartphone(%Smartphone{} = smartphone) do
@@ -257,7 +257,7 @@ defmodule Hello.Catalog do
 
   def list_smartphones do
     Repo.all(Smartphone)
-    |> preload()
+    |> preload_smartphone()
   end
 
   def list_four_smartphones do
@@ -265,7 +265,7 @@ defmodule Hello.Catalog do
     |> Enum.take(4)
   end
 
-  defp preload(smartphone) do
+  def preload_smartphone(smartphone) do
     smartphone
     |> Repo.preload(
       spec: [

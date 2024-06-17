@@ -10,6 +10,8 @@ defmodule HelloWeb.UserSettingsLive do
       <:subtitle>Manage your account nickname, email address and password settings</:subtitle>
     </.header>
 
+    <.button><.link href={~p"/users/log_out"} method="delete">Log out</.link></.button>
+
     <div class="space-y-12 divide-y">
       <div>
         <.simple_form

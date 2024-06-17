@@ -7,7 +7,7 @@ defmodule Hello.ShoppingCart.CartItem do
     field :quantity, :integer
 
     belongs_to :cart, Hello.ShoppingCart.Cart
-    belongs_to :product, Hello.Catalog.Product
+    belongs_to :phone, Hello.Catalog.Smartphones.Smartphone
 
     timestamps(type: :utc_datetime)
   end
