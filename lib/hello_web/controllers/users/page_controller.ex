@@ -33,7 +33,10 @@ defmodule HelloWeb.PageController do
   end
 
   def show(conn, %{"id" => id}) do
-    phone = Catalog.get_smartphone(id)
+    phone =
+      id
+      |> Catalog.get_smartphone()
+      |> Catalog.inc_page_views()
 
     render(conn, :show, phone: phone)
   end

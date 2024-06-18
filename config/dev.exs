@@ -2,15 +2,14 @@ import Config
 
 # Configure your database
 config :hello, Hello.Repo,
-  # username: "postgres",
-  # password: "1531",
-  # hostname: "localhost",
-  # database: "hello_dev",
-  username: "postgres.daqqmilziamnxpttsewj",
-  password: "DmYc7v#Ffjwz9#3",
-  hostname: "aws-0-ap-south-1.pooler.supabase.com",
-  port: "5432",
-  database: "postgres",
+  username: "postgres",
+  password: "1531",
+  hostname: "localhost",
+  database: "hello_dev",
+  # username: "postgres.daqqmilziamnxpttsewj",
+  # password: "DmYc7v#Ffjwz9#3",
+  # hostname: "aws-0-ap-south-1.pooler.supabase.com",
+  # port: "5432",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

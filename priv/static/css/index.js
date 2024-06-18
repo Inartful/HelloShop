@@ -13,3 +13,22 @@ const handleImageChange = (offset) => {
 
 const onNext = () => handleImageChange(1)
 const onPrev = () => handleImageChange(-1)
+
+function copyText() {
+    var stringToParse = document.getElementById("textToCopy").textContent;
+
+    var matches = stringToParse.match(/Код товара: (\d+)/);
+    if (matches && matches.length > 1) {
+        var productId = matches[1];
+
+        var url = `localhost:4000/${productId}`;
+
+        navigator.clipboard.writeText(url).then(function () {
+            alert(`Ссылка скопирована: ${url}`);
+        }, function (err) {
+            console.error(`Ошибка при копировании ссылки: ${err}`);
+        });
+    } else {
+        console.error("Не удалось извлечь код товара из строки.");
+    }
+}

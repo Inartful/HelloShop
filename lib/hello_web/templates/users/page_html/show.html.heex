@@ -1,4 +1,6 @@
 <link rel="stylesheet" href={~p"/assets/show.css"}>
+<script src={~p"/assets/index.js"}>
+</script>
 
 <div class="show">
     <div class="product">
@@ -9,11 +11,15 @@
             <div class="info">
                 <div class="review">
                     <img src={~p"/images/show/stars.svg"} style="padding-right: 10px;">
-                    <p style="padding-right: 30px;"> 0 отзывов</p>
-                    <a href="" class="review"><img src={~p"/images/show/share.svg"} style="padding-right: 10px;">
-                        Поделиться </a>
+                    <p style="padding-right: 20px;"> 0 отзывов</p>
+                    <p style="padding-right: 20px; color: grey">
+
+                        <%= @phone.views %> просмотров
+                    </p><button onclick="copyText()" class="review"><img src={~p"/images/show/share.svg"}
+                            style="padding-right: 10px;">
+                        Поделиться </button>
                 </div>
-                <p class="code">Код товара: <%= @phone.id %>
+                <p class="code" id="textToCopy">Код товара: <%= @phone.id %>
                 </p>
             </div>
         </div>

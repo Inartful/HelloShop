@@ -55,7 +55,12 @@ for title <- ["Сталь", "Пластик", "Стекло", "Титан", "З�
   |> Hello.Repo.insert()
 end
 
-for path <- ["samsung_galaxy_s24_front", "apple_iphone_15_pro_max_front", "google_pixel_8_pro"] do
+for path <- [
+      "samsung_galaxy_s24_front",
+      "apple_iphone_15_pro_max_front",
+      "google_pixel_8_pro",
+      "one_plus_12r"
+    ] do
   %Hello.Catalog.Smartphones.Photo{}
   |> Hello.Catalog.Smartphones.Photo.changeset(%{path: path})
   |> Hello.Repo.insert()
@@ -322,6 +327,98 @@ smartphone_changeset =
       brand: "Google",
       views: 0,
       price: 490_990,
+      amount: 100
+    }
+  )
+
+smartphone_changeset =
+  Ecto.Changeset.put_assoc(smartphone_changeset, :spec, spec_changeset)
+  |> Ecto.Changeset.put_assoc(:colors, colors)
+  |> Ecto.Changeset.put_assoc(:materials, materials)
+  |> Ecto.Changeset.put_assoc(:photos, photos)
+
+case Hello.Repo.insert(smartphone_changeset) do
+  {:ok, _} -> IO.puts("Smartphone inserted successfully")
+  {:error, changeset} -> IO.inspect(changeset.errors, label: "Error inserting smartphone:")
+end
+
+####################
+# One Plus
+####################
+
+processor =
+  Processor.changeset(%Processor{
+    name: "Snapdragon 8+ Gen 1",
+    manufacturer: "Qualcomm",
+    cores: 8,
+    clock_speed: "3.2 GHz"
+  })
+
+gpu = GPU.changeset(%GPU{name: "Adreno 730", manufacturer: "Qualcomm"})
+
+screen =
+  Screen.changeset(%Screen{
+    size: "6.7 inches",
+    resolution: "1080 x 2412 pixels",
+    type: "Fluid AMOLED",
+    refresh_rate: "120 Hz"
+  })
+
+main_camera =
+  MainCamera.changeset(%MainCamera{
+    resolution: "50MP + 8MP + 2MP",
+    features: "OIS, HDR, Night mode"
+  })
+
+front_camera =
+  FrontCamera.changeset(%FrontCamera{
+    resolution: "16MP",
+    features: "HDR, Face detection, Portrait mode"
+  })
+
+operation_system = OperationSystem.changeset(%OperationSystem{name: "Android 13"})
+
+dimensions =
+  Dimensions.changeset(%Dimensions{length: 163.1, width: 74.1, depth: 8.3})
+
+spec_changeset =
+  Spec.changeset(
+    %Spec{},
+    %{
+      weight: 194,
+      additional_features: "Fingerprint sensor, Water resistant (IP54), Fast charging",
+      storage: 256,
+      ram: 12,
+      battery: 5000
+    }
+  )
+
+spec_changeset = Ecto.Changeset.put_assoc(spec_changeset, :processor, processor)
+spec_changeset = Ecto.Changeset.put_assoc(spec_changeset, :gpu, gpu)
+spec_changeset = Ecto.Changeset.put_assoc(spec_changeset, :screen, screen)
+spec_changeset = Ecto.Changeset.put_assoc(spec_changeset, :main_camera, main_camera)
+spec_changeset = Ecto.Changeset.put_assoc(spec_changeset, :front_camera, front_camera)
+spec_changeset = Ecto.Changeset.put_assoc(spec_changeset, :operation_system, operation_system)
+spec_changeset = Ecto.Changeset.put_assoc(spec_changeset, :dimensions, dimensions)
+
+colors_ids = [1, 3, 4]
+colors = Repo.all(from c in Color, where: c.id in ^colors_ids)
+
+materials_ids = [2, 3, 4]
+materials = Repo.all(from c in Material, where: c.id in ^materials_ids)
+
+photoes_ids = [4]
+photos = Repo.all(from c in Photo, where: c.id in ^photoes_ids)
+
+smartphone_changeset =
+  Smartphone.changeset(
+    %Smartphone{},
+    %{
+      name: "OnePlus 12R",
+      description: "This is an example smartphone",
+      brand: "OnePlus",
+      views: 0,
+      price: 599_999,
       amount: 100
     }
   )

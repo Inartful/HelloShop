@@ -14,11 +14,13 @@
             <% [photo | _]=item.phone.photos %>
                 <% path=photo.path <> ".png" %>
                     <div class="product">
-                        <img src={~p"/images/phones/#{path}"} class="preview">
+                        <a href={~p"/#{item.phone.id}"}><img src={~p"/images/phones/#{path}"} class="preview"></a>
                         <div class="info">
                             <div>
                                 <h1>
-                                    <%= item.phone.name %>
+                                    <a href={~p"/#{item.phone.id}"}>
+                                        <%= item.phone.name %>
+                                    </a>
                                 </h1>
                                 <div style="display: flex;flex-direction: row;">
                                     <a href="/" class="button"><img src={~p"/images/cart_show/like.svg"}></a>
