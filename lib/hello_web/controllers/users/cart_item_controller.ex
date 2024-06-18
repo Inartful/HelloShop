@@ -7,12 +7,12 @@ defmodule HelloWeb.CartItemController do
     case ShoppingCart.add_item_to_cart(conn.assigns.cart, phone_id) do
       {:ok, _item} ->
         conn
-        |> put_flash(:info, "Item added to your cart")
+        |> put_flash(:info, "Товар добавлен в Вашу корзину")
         |> redirect(to: ~p"/#{phone_id}")
 
       {:error, _changeset} ->
         conn
-        |> put_flash(:error, "There was an error adding the item to your cart")
+        |> put_flash(:error, "Произошла ошибка при добавлении товара в корзину")
         |> redirect(to: ~p"/#{phone_id}")
     end
   end

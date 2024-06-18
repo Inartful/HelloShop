@@ -1,24 +1,55 @@
-<.header>
-    Thank you for your order!
-    <:subtitle>
-        <strong>User uuid: </strong>
-        <%= @order.user_uuid %>
-    </:subtitle>
-</.header>
+<link rel="stylesheet" href={~p"/assets/order_show.css"}>
+<link rel="stylesheet" href={~p"/assets/cart_show.css"}>
 
-<.table id="items" rows={@order.line_items}>
-    <:col :let={item} label="Title">
-        <%= item.product.title %>
-    </:col>
-    <:col :let={item} label="Quantity">
-        <%= item.quantity %>
-    </:col>
-    <:col :let={item} label="Price">
-        <%= HelloWeb.CartHTML.currency_to_str(item.price) %>
-    </:col>
-</.table>
+<div style="display: flex; flex-direction:column; align-items:center; padding: 30px 0px">
+    <h1>Оформление заказа</h1>
 
-<strong>Total price:</strong>
-<%= HelloWeb.CartHTML.currency_to_str(@order.total_price) %>
+    <div class="container">
+        <div class="cart-info">
+            <h1 style="font-size:36px; padding-left: 40px">
+                1. Товары в корзине
+            </h1>
+        </div>
+        <%= for item <- @order.line_items do %>
+            <% [photo | _]=item.phone.photos %>
+                <% path=photo.path <> ".png" %>
+                    <div class="product">
+                        <img src={~p"/images/phones/#{path}"} class="preview">
+                        <div class="info">
+                            <div>
+                                <h1>
+                                    <%= item.phone.name %>
+                                </h1>
+                                <div style="display: flex;flex-direction: row;">
+                                    <a href="/" class="button"><img src={~p"/images/cart_show/like.svg"}></a>
+                                    <.link href={~p"/orders/#{@order.id}/#{item.phone.id}/-100"} method="put"
+                                        class="button"><img src={~p"/images/cart_show/trash.svg"}></.link>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="count">
+                            <h1>
+                                <%= Hello.Helper.format_with_spaces(item.phone.price) %>₸
+                            </h1>
 
-    <.back navigate={~p"/products"}>Back to products</.back>
+                            <div style="display: flex;flex-direction: row;margin-top: 30px; margin-bottom: 10px;">
+                                <.link href={~p"/orders/#{@order.id}/#{item.phone.id}/-1"} method="put"><img
+                                        src={~p"/images/cart_show/grey-box.png"}></.link>
+                                <div class="amount">
+                                    <p>
+                                        <%= item.quantity %>
+                                    </p>
+                                </div>
+                                <.link href={~p"/orders/#{@order.id}/#{item.phone.id}/1"} method="put"><img
+                                        src={~p"/images/cart_show/blue-box.png"}></.link>
+                            </div>
+                            <p class="id">Код товара: <%= item.phone.id %>
+                            </p>
+                        </div>
+                    </div>
+                    <% end %>
+                        <h1>Общая цена: <%= Hello.Helper.format_with_spaces(Decimal.round(@order.total_price, 2)) %>₸
+                        </h1>
+
+    </div>
+</div>

@@ -3,14 +3,6 @@ defmodule Hello.Orders.Order do
   import Ecto.Changeset
   alias Hello.Orders.Status
 
-  @doc """
-  Описание статусов заказов:
-
-  * `1` - Заказ ожидает обработки.
-  * `2` - Заказ обрабатывается.
-  * `3` - Заказ завершен.
-  * `4` - Заказ отменен.
-  """
   schema "orders" do
     field :user_uuid, Ecto.UUID
     field :total_price, :decimal

@@ -5,20 +5,25 @@ defmodule HelloWeb.UserConfirmationLive do
 
   def render(%{live_action: :edit} = assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">Confirm Account</.header>
+    <div
+      class="mx-auto max-w-sm"
+      style="background-color: white; border: 1px solid #77A0A4; border-radius: 15px; padding: 20px 30px; margin-top: 20px; margin-bottom: 20px"
+    >
+      <div class="mx-auto max-w-sm">
+        <.header class="text-center">Confirm Account</.header>
 
-      <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
-        <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
-        <:actions>
-          <.button phx-disable-with="Confirming..." class="w-full">Confirm my account</.button>
-        </:actions>
-      </.simple_form>
+        <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
+          <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
+          <:actions>
+            <.button phx-disable-with="Confirming..." class="w-full">Confirm my account</.button>
+          </:actions>
+        </.simple_form>
 
-      <p class="text-center mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
-      </p>
+        <p class="text-center mt-4">
+          <.link href={~p"/users/register"}>Register</.link>
+          | <.link href={~p"/users/log_in"}>Log in</.link>
+        </p>
+      </div>
     </div>
     """
   end
@@ -35,7 +40,7 @@ defmodule HelloWeb.UserConfirmationLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "User confirmed successfully.")
+         |> put_flash(:info, "Пользователь успешно подтвержден.")
          |> redirect(to: ~p"/")}
 
       :error ->
@@ -50,7 +55,10 @@ defmodule HelloWeb.UserConfirmationLive do
           %{} ->
             {:noreply,
              socket
-             |> put_flash(:error, "User confirmation link is invalid or it has expired.")
+             |> put_flash(
+               :error,
+               "Ссылка для подтверждения пользователя недействительна или срок ее действия истек."
+             )
              |> redirect(to: ~p"/")}
         end
     end

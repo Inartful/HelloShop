@@ -15,7 +15,7 @@ defmodule HelloWeb.UserSessionController do
   end
 
   def create(conn, params) do
-    create(conn, params, "Welcome back!")
+    create(conn, params, "Добро пожаловать!")
   end
 
   defp create(conn, %{"user" => user_params}, info) do
@@ -28,7 +28,7 @@ defmodule HelloWeb.UserSessionController do
     else
       # In order to prevent user enumeration attacks, don't disclose whether the email is registered.
       conn
-      |> put_flash(:error, "Invalid email or password")
+      |> put_flash(:error, "Неправильный адрес электронной почты или пароль")
       |> put_flash(:email, String.slice(email, 0, 160))
       |> redirect(to: ~p"/users/log_in")
     end

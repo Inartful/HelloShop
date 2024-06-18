@@ -60,7 +60,7 @@ defmodule HelloWeb.UserResetPasswordLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Password reset successfully.")
+         |> put_flash(:info, "Пароль успешно сброшен.")
          |> redirect(to: ~p"/users/log_in")}
 
       {:error, changeset} ->
@@ -78,7 +78,7 @@ defmodule HelloWeb.UserResetPasswordLive do
       assign(socket, user: user, token: token)
     else
       socket
-      |> put_flash(:error, "Reset password link is invalid or it has expired.")
+      |> put_flash(:error, "Ссылка для сброса пароля недействительна или срок ее действия истек.")
       |> redirect(to: ~p"/")
     end
   end

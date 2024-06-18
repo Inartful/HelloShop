@@ -21,7 +21,7 @@ defmodule HelloWeb.CartController do
 
         {:error, _reason} ->
           conn
-          |> put_flash(:error, "There was an error removing the item from your cart")
+          |> put_flash(:error, "Произошла ошибка при удалении товара из корзины")
           |> redirect(to: ~p"/cart")
       end
     else
@@ -31,7 +31,7 @@ defmodule HelloWeb.CartController do
 
         {:error, _changeset} ->
           conn
-          |> put_flash(:error, "There was an error updating your cart")
+          |> put_flash(:error, "Произошла ошибка при обновлении корзины")
           |> redirect(to: ~p"/cart")
       end
     end

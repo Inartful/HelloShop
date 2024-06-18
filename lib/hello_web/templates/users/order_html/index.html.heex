@@ -1,33 +1,53 @@
-<.header>
-  Listing Orders
-  <!--<:actions>
-      <.link href={~p"/products/new"}>
-        <.button>New Product</.button>
-      </.link>
-    </:actions>-->
-</.header>
+<link rel="stylesheet" href={~p"/assets/cart_show.css"}>
 
-<.table id="orders" rows={@orders} row_click={&JS.navigate(~p"/orders/#{&1}")}>
-  <:col :let={order} label="Title">
-    <%= order.id %>
-  </:col>
-  <:col :let={order} label="Description">
-    <%= order.total_price %>
-  </:col>
-  <:col :let={order} label="Status">
-    <%= if order.status, do: order.status.name, else: "None" %>
-  </:col>
-  <:action :let={order}>
-    <div class="sr-only">
-      <.link navigate={~p"/orders/#{order}"}>Show</.link>
+<div style="display: flex; flex-direction:column; align-items:center">
+  <%= if @orders==[] do %>
+    <div class=" container-empty">
+      <h1>У вас пока нет заказов</h1>
+      <p>Загляните на главную, чтобы выбрать товары
+        или найдите нужное в поиске</p>
+      <div style="display:flex; align-items:center">
+        <.link class="link" href="/">Перейти на главную</.link>
+      </div>
     </div>
-    <!--<.link navigate={~p"/products/#{product}/edit"}>Edit</.link>-->
-  </:action>
-  <!--<:action :let={product}>
-      <.link href={~p"/products/#{product}"} method="delete" data-confirm="Are you sure?">
-        Delete
-      </.link>
-    </:action>-->
-</.table>
+    <% else %>
+      <div class="container">
+        <div class="cart-info">
+          <h1 style="font-size:36px; padding-right: 15px">
+            Заказы
+          </h1>
+          <p style="font-size:20px">
+            <%= length(@orders)%> заказов
+          </p>
+        </div>
+        <%= for order <- @orders do %>
+          <% item=List.first(order.line_items) %>
+            <% [photo | _]=item.phone.photos %>
+              <% path=photo.path <> ".png" %>
+                <div class="product">
+                  <img src={~p"/images/phones/#{path}"} class="preview">
+                  <div class="info">
+                    <div>
+                      <div style="display: flex; align-items: center; padding-bottom: 20px;">
+                        <h1 style=" padding: 0px; margin: 0px; padding-right: 15px;">
+                          <%= item.phone.name %>
+                        </h1>
+                        <p style="font-size:20px; text-align: left; padding: 0px; margin: 0px; line-height: 29.26px;"> И
+                          еще <%= length(order.line_items)-1 %> товаров
+                        </p>
+                      </div>
+                      <.link href={~p"/orders/#{order.id}"} method="delete" class="button"><img
+                          src={~p"/images/cart_show/trash.svg"}></.link>
+                    </div>
+                  </div>
+                  <div class="count">
+                    <h1>
+                      Общая цена: <%= Hello.Helper.format_with_spaces(Decimal.round(order.total_price, 2)) %>₸
+                    </h1>
+                  </div>
+                </div>
+                <% end %>
+      </div>
+      <% end%>
 
-<.back navigate={~p"/products"}>Back to products</.back>
+</div>

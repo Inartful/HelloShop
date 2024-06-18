@@ -158,7 +158,10 @@ defmodule HelloWeb.UserAuth do
     else
       socket =
         socket
-        |> Phoenix.LiveView.put_flash(:error, "You must log in to access this page.")
+        |> Phoenix.LiveView.put_flash(
+          :error,
+          "Вы должны авторизироваться чтобы иметь доступ к этой странице."
+        )
         |> Phoenix.LiveView.redirect(to: ~p"/users/log_in")
 
       {:halt, socket}
@@ -207,7 +210,7 @@ defmodule HelloWeb.UserAuth do
       conn
     else
       conn
-      |> put_flash(:error, "You must log in to access this page.")
+      |> put_flash(:error, "Вы должны авторизироваться чтобы иметь доступ к этой странице.")
       |> maybe_store_return_to()
       |> redirect(to: ~p"/users/log_in")
       |> halt()
@@ -248,7 +251,7 @@ defmodule HelloWeb.UserAuth do
       conn
     else
       conn
-      |> put_flash(:error, "You must be an admin to access this page.")
+      |> put_flash(:error, "Вы должны быть админом чтобы иметь доступ к этой странице.")
       |> redirect(to: ~p"/")
       |> halt()
     end

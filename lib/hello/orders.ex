@@ -19,10 +19,36 @@ defmodule Hello.Orders do
 
   """
   def list_orders(user_uuid) do
-    Repo.all(
-      from o in Order,
-        where: o.user_uuid == ^user_uuid,
-        preload: :status
+    orders =
+      Repo.all(
+        from o in Order,
+          where: o.user_uuid == ^user_uuid,
+          preload: :status
+      )
+
+    Enum.map(
+      orders,
+      fn order ->
+        order
+        |> Repo.preload(
+          line_items: [
+            phone: [
+              spec: [
+                :processor,
+                :gpu,
+                :screen,
+                :main_camera,
+                :front_camera,
+                :operation_system,
+                :dimensions
+              ],
+              colors: [],
+              materials: [],
+              photos: []
+            ]
+          ]
+        )
+      end
     )
   end
 
@@ -257,5 +283,17 @@ defmodule Hello.Orders do
     %Status{}
     |> Status.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def total_order_price(%Order{} = order) do
+    Enum.reduce(order.line_items, 0, fn item, acc ->
+      item
+      |> total_item_price()
+      |> Decimal.add(acc)
+    end)
+  end
+
+  def total_item_price(%LineItem{} = item) do
+    Decimal.mult(item.phone.price, item.quantity)
   end
 end

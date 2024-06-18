@@ -5,24 +5,29 @@ defmodule HelloWeb.UserForgotPasswordLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
-        Forgot your password?
-        <:subtitle>We'll send a password reset link to your inbox</:subtitle>
-      </.header>
+    <div
+      class="mx-auto max-w-sm"
+      style="background-color: white; border: 1px solid #77A0A4; border-radius: 15px; padding: 20px 30px; margin-top: 20px; margin-bottom: 20px"
+    >
+      <div class="mx-auto max-w-sm">
+        <.header class="text-center">
+          Забыли пароль?
+          <:subtitle>Мы отправим ссылку для сброса пароля на вашу почту.</:subtitle>
+        </.header>
 
-      <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
-        <.input field={@form[:email]} type="email" placeholder="Email" required />
-        <:actions>
-          <.button phx-disable-with="Sending..." class="w-full">
-            Send password reset instructions
-          </.button>
-        </:actions>
-      </.simple_form>
-      <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
-      </p>
+        <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
+          <.input field={@form[:email]} type="email" placeholder="Email" required />
+          <:actions>
+            <.button phx-disable-with="Отправляем..." class="w-full">
+              Отправить инструкции по сбросу пароля
+            </.button>
+          </:actions>
+        </.simple_form>
+        <p class="text-center text-sm mt-4">
+          <.link href={~p"/users/register"}>Зарегистрироваться</.link>
+          | <.link href={~p"/users/log_in"}>Авторизироваться</.link>
+        </p>
+      </div>
     </div>
     """
   end
