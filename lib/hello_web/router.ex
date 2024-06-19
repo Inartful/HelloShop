@@ -26,6 +26,9 @@ defmodule HelloWeb.Router do
     resources "/products", ProductController, only: [:index, :show]
     resources "/cart_items", CartItemController, only: [:create, :delete]
 
+    resources "/favorite_items", FavoriteItemController, only: [:create, :delete]
+    get "/favorites", FavoriteController, :show
+
     get "/cart", CartController, :show
     put "/cart/:phone_id/:operation", CartController, :update
 

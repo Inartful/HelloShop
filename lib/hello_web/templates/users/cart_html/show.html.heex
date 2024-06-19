@@ -35,7 +35,10 @@
                                             </a>
                                         </h1>
                                         <div style="display: flex;flex-direction: row;">
-                                            <a href="/" class="button"><img src={~p"/images/cart_show/like.svg"}></a>
+                                            <.link href={~p"/favorite_items?phone_id=#{item.phone.id}"} class="button"
+                                                method="post">
+                                                <img src={~p"/images/cart_show/like.svg"}>
+                                            </.link>
                                             <.link href={~p"/cart_items/#{item.phone.id}"} method="delete"
                                                 class="button"><img src={~p"/images/cart_show/trash.svg"}></.link>
                                         </div>

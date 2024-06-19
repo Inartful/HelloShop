@@ -38,6 +38,12 @@ defmodule HelloWeb.PageController do
       |> Catalog.get_smartphone()
       |> Catalog.inc_page_views()
 
-    render(conn, :show, phone: phone)
+    favorite =
+      case Hello.Favorites.get_favorite_item_by_uuid(conn.assigns.current_user.user_uuid, id) do
+        nil -> "interest.svg"
+        _ -> "in_interest.png"
+      end
+
+    render(conn, :show, phone: phone, favorite: favorite)
   end
 end

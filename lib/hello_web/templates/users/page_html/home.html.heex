@@ -20,29 +20,31 @@
   <h3>Специально для вас</h3>
   <div class="smartphones">
     <%= for phone <- @phones do%>
-      <div class="smartphone">
-        <img src={~p"/images/phones/#{phone.path}"} alt="Телефон 1" class="smartphone-photo">
-        <div>
-          <div class="review"><img src={~p"/images/Звёзды.svg"}>
-            <p> 0 отзывов</p>
+      <a href={~p"/#{phone.id}"}>
+        <div class="smartphone">
+          <img src={~p"/images/phones/#{phone.path}"} alt="Телефон 1" class="smartphone-photo">
+          <div>
+            <div class="review"><img src={~p"/images/Звёзды.svg"}>
+              <p> 0 отзывов</p>
+            </div>
+            <div class="category">Смартфоны</div>
+            <div class="name">
+              <%= phone.name %>
+            </div>
           </div>
-          <div class="category">Смартфоны</div>
-          <div class="name">
-            <%= phone.name %>
+          <div class="bottom-section">
+            <div class="price">
+              <h1>
+                <%= phone.price %>
+              </h1>
+              <p>
+                <%= if phone.have? do "Есть в наличии" else "Нет в наличии" end %>
+              </p>
+            </div>
+            <.link href={~p"/cart_items?phone_id=#{phone.id}"} method="post" class="link">Купить</.link>
           </div>
         </div>
-        <div class="bottom-section">
-          <div class="price">
-            <h1>
-              <%= phone.price %>
-            </h1>
-            <p>
-              <%= if phone.have? do "Есть в наличии" else "Нет в наличии" end %>
-            </p>
-          </div>
-          <.link href={~p"/#{phone.id}"} method="get" class="link">Купить</.link>
-        </div>
-      </div>
+      </a>
       <% end %>
   </div>
   <div class="companies">

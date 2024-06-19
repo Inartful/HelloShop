@@ -1,0 +1,54 @@
+<link rel="stylesheet" href={~p"/assets/favorite_show.css"}>
+
+<div style="display: flex; flex-direction:column; align-items:center">
+    <%= if @favorite_items==[] do %>
+        <div class=" container-empty">
+            <h1>Избранное</h1>
+        </div>
+
+        <div class="empty">
+            <img src={~p"/images/show/in_interest.png"}>
+            <p>В избранном пусто</p>
+        </div>
+        <% else %>
+            <div class="container">
+                <div class="cart-info">
+                    <h1 style="font-size:36px; padding-right: 15px">
+                        Избранное
+                    </h1>
+                    <p style="font-size:20px">
+                        <%= length(@cart.items)%> товаров
+                    </p>
+                </div>
+                <%= for item <- @favorite_items do %>
+                    <% [photo | _]=item.phone.photos %>
+                        <% path=photo.path <> ".png" %>
+                            <div class="product">
+                                <a href={~p"/#{item.phone.id}"}>
+                                    <img src={~p"/images/phones/#{path}"} class="preview"></a>
+                                <div class="info">
+                                    <div>
+                                        <h1>
+                                            <a href={~p"/#{item.phone.id}"}>
+                                                <%= item.phone.name %>
+                                            </a>
+                                        </h1>
+                                        <div style="display: flex;flex-direction: row;">
+                                            <.link href={~p"/favorite_items/#{item.phone.id}"} method="delete"
+                                                class="button"><img src={~p"/images/cart_show/trash.svg"}></.link>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="count">
+                                    <h1>
+                                        <%= Hello.Helper.format_with_spaces(item.phone.price) %>₸
+                                    </h1>
+                                    <p class="id">Код товара: <%= item.phone.id %>
+                                    </p>
+                                </div>
+                            </div>
+                            <% end %>
+            </div>
+            <% end%>
+
+</div>

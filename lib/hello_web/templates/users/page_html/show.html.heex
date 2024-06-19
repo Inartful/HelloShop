@@ -96,7 +96,10 @@
                         <div style="display: flex; align-items: center; justify-content: space-around;">
                             <.link href={~p"/cart_items?phone_id=#{@phone.id}"} method="post" class="link">Купить
                             </.link>
-                            <.link href={~p"/"} method="get"><img src={~p"/images/show/interest.svg"}></.link>
+                            <.link href={~p"/favorite_items?phone_id=#{@phone.id}"} method="post"><img
+                                    src={~p"/images/show/#{@favorite}"}
+                                    style="height: 60px; width: 60px; object-fit: contain; object-position: center;">
+                            </.link>
                         </div>
                     </div>
         </div>
