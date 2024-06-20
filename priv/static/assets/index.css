@@ -1,0 +1,234 @@
+.index {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.index h3 {
+    padding-top: 20px;
+    padding-bottom: 60px;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.carousel {
+    margin: 30px 0px;
+    width: 1544px;
+    height: 561px;
+    position: relative;
+}
+
+.carousel ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.slide {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+}
+
+.slide[data-active] {
+    opacity: 1;
+    z-index: 1;
+}
+
+.slide img {
+    border-radius: 15px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.carousel-button {
+    position: absolute;
+    z-index: 2;
+    font-size: 80px;
+    background: none;
+    border: none;
+    top: 40%;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    border-radius: .25rem;
+    padding-left: 10px;
+}
+
+.carousel-button:hover,
+.carousel-button:focus {
+    color: white;
+}
+
+.carousel-button.next {
+    right: 1rem;
+}
+
+.carousel-button.priv {
+    left: 1rem;
+}
+
+.navigation {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 20px 150px;
+}
+
+.smartphones {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    padding-right: 20px;
+}
+
+.smartphone {
+    margin-left: 20px;
+    padding: 20px;
+    width: 360px;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 3px solid #DADEDE;
+    border-radius: 30px;
+}
+
+.smartphone-photo {
+    padding-top: 20px;
+    width: 305px;
+    height: 320px;
+    object-fit: contain;
+    object-position: center;
+}
+
+.review {
+    display: flex;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.review p {
+    font-family: Montserrat, sans-serif;
+    color: #1C1C27;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18.29px;
+    padding-left: 10px;
+}
+
+
+.smartphone .category {
+    font-family: Montserrat, sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18.29px;
+    color: #6E7C7E;
+    padding-top: 10px;
+
+}
+
+.smartphone .name {
+    font-family: Montserrat, sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24.38px;
+    color: #3E5053;
+    padding-top: 10px;
+
+}
+
+.bottom-section {
+    margin-top: auto;
+}
+
+.smartphone .price {
+
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.smartphone .price h1 {
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29.26px;
+    color: black;
+    display: flex;
+    align-items: center;
+}
+
+.smartphone .price p {
+    font-family: Montserrat, sans-serif;
+    color: #1C1C27;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18.29px;
+    padding-left: 10px;
+}
+
+.smartphone .link {
+    width: 312.96px;
+    height: 60px;
+    border-radius: 15px;
+    padding: 0;
+    margin: 0;
+    background: #77A0A4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Montserrat, sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24.38px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.smartphone button:active {
+    background: #6c8d91;
+}
+
+.companies {
+    background-color: white;
+    padding: 20px;
+    margin: 40px 0;
+    width: 100%;
+    height: 548px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.companies-columns {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.company-box {
+    width: 482px;
+    height: 200px;
+    border: 3px solid #DADEDE;
+    border-radius: 15px;
+}
+
+.company-box img {
+    border-radius: 15px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}

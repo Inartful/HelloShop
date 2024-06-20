@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+
+.head {
+    width: 100%;
+    height: 165px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px 20px;
+    background-color: #ffffff;
+}
+
+.logo img {
+    width: 172;
+    height: 81;
+}
+
+.search-bar {
+    display: flex;
+    width: 784px;
+    height: 62px;
+    justify-content: left;
+    background-color: #77A0A4;
+    padding: 3px;
+    border-radius: 4px;
+}
+
+.search-bar input {
+    min-width: 652px;
+    height: 56px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29.26px;
+}
+
+.search-button {
+    width: 100%;
+    padding-left: 40px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.personal-cabinet {
+    width: 237;
+    height: 41;
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 15px;
+    color: #333;
+}
+
+.account-button img {
+    height: 24px;
+    margin-right: 5px;
+}
+
+.icon {
+    height: 45xp;
+    width: 45px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.back {
+    background-color: #EDEFEF;
+    width: 100%;
+    height: 100%;
+}
